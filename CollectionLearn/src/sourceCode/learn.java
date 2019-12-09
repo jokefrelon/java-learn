@@ -7,11 +7,11 @@ import java.util.ListIterator;
 
 public class learn {
 	public static void main(String[] args) {
-		List ddos = new ArrayList();
+		List<Integer> ddos = new ArrayList<Integer>();
 		ssr(ddos);
 	}
 
-	public static void ssr(List list) {
+	public static void ssr(List<Integer> list) {
 		list.add(2121);
 		list.add(2111);
 		list.add(2123);
@@ -30,7 +30,7 @@ public class learn {
 		System.out.println(list.get(1));
 		System.out.println(list.indexOf(2111));
 
-		Iterator it = list.iterator();
+		Iterator<Integer> it = list.iterator();
 		while (it.hasNext())
 			System.out.println(it.next());
 
@@ -42,7 +42,7 @@ public class learn {
 //			}
 
 //		}
-		for (ListIterator iet = list.listIterator(); iet.hasNext();) {
+		for (ListIterator<Integer> iet = list.listIterator(); iet.hasNext();) {
 			Object obj = iet.next();
 			if (obj.equals(98)) {
 				iet.add(23);

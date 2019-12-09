@@ -30,4 +30,15 @@ public class person {
 		return "person [age=" + age + ", name=" + name + "]";
 	}
 
+	public boolean equals(person obj) {
+		String als = this.toString();
+		String objToStr = obj.toString();
+		if (als==objToStr) {
+			return true;
+		}else {
+			return false;
+		}
+	
+		
+	}
 }
