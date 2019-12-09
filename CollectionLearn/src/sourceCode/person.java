@@ -1,4 +1,4 @@
-package hadoop_download;
+package sourceCode;
 
 public class person {
 	private int age;
