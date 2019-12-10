@@ -302,23 +302,112 @@ class test {
 }
 ~~~
 
-## 3. set集合
+## 3. Set集合
 
 ~~~properties
-set--:不允许重复元素,方法和collection相同.set集合只能用Iterator取出元素
-	|--hashset:不保证存入和取出的顺序一致,不允许重复,效率高 
-	|--treeset:
+Set--:不允许重复元素,方法和collection相同.set集合只能用Iterator取出元素
+	|--Hashset:不保证存入和取出的顺序一致,不允许重复,效率高 
+			 |--LinkedHashSet:有序的HashSet表,不允许重复	
+	|--Treeset:可以对元素进行排序
 ~~~
 
 
 
+### 3.1HashSet
 
+**HashSet**主要就是靠**hashcode()**表来确定元素排列的,在使用时必须要重写**hashCode()**方法,而**hashCode()**方法内部又调用到了 **equals()**方法来解决**Hash冲突**,所以在使用时必须要**Overwrite**这两个方法
 
+### 3.1.1 HashSet使用实例
 
+~~~Java
+package sourceCode;
 
+import java.util.HashSet;
+import java.util.Set;
 
+public class hashset {
+	public static void main(String[] args) {
+		Set doThat = new HashSet();
+		
+		doThat.add(new person(13,"coco"));
+		doThat.add(new person(22,"peon"));
+		doThat.add(new person(23,"frelon"));
+		doThat.add(new person(23,"frelon"));
+		
+		System.out.println(doThat);
+	}
+}
 
+person类同上,这里仅写出 Overwrite 部分
+	@Override
+	public boolean equals(Object obj) {
+		if (this==obj) {
+			return true;
+		}	
+			person se = (person) obj;
+			return this.name.equals(se.name)&&this.age==se.age;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + age;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+~~~
 
+### 3.2 TreeSet
+
+#### 3.2.1Comparable接口的学习
+
+~~~properties
+Exception in thread "main" java.lang.ClassCastException: sourceCode.person cannot be cast to java.lang.Comparable
+	at java.util.TreeMap.compare(Unknown Source)
+	at java.util.TreeMap.put(Unknown Source)
+	at java.util.TreeSet.add(Unknown Source)
+~~~
+
+这个异常对于学习TreeSet的我是一脸懵逼啊,啥啥啥啊,就报了个异常,再看看我这代码没有错啊,编辑器也没有报错啊!
+
+~~~java
+package sourceCode;
+
+import java.util.Set;
+import java.util.TreeSet;
+
+public class treeSetLearn {
+	public static void main(String[] args) {
+		Set ssf = new TreeSet();
+		ssf.add(new person(12, "hfh"));
+		ssf.add(new person(19, "frelon"));
+		ssf.add(new person(13, "jokoe"));
+
+	}
+}
+~~~
+
+遂百度,知,需要**person** 类 **implements** **comparable** 接口并 **Overwrite** 该接口的 **CompareTo()** 方法
+
+~~~java
+package sourceCode;
+
+public class person implements Comparable {
+​~~~
+​~~~
+	public int compareTo(Object osi) {
+		person seao = (person) osi;
+		if(this.age>seao.age) {
+			return 1;
+		}
+		if(this.age<seao.age)
+			return -1;
+		return 0;
+		
+	}
+~~~
+
+改完以后,成功按照年龄(从小到大)排序
 
 
 

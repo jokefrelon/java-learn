@@ -1,6 +1,6 @@
 package sourceCode;
 
-public class person {
+public class person implements Comparable {
 	private int age;
 	private String name;
 
@@ -30,8 +30,15 @@ public class person {
 	public String toString() {
 		return "person [age=" + age + ", name=" + name + "]";
 	}
-	
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + age;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -51,11 +58,24 @@ public class person {
 			return false;
 		return true;
 	}
-
-	public boolean equals(person obj) {
-		if (this==obj) {
-			return true;
+	
+	public int compareTo(Object osi) {
+		person seao = (person) osi;
+		if(this.age>seao.age) {
+			return 1;
 		}
-			return this.name.equals(obj.name)&&this.age==obj.age;
+		if(this.age<seao.age)
+			return -1;
+		return 0;
+		
 	}
+	
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this==obj) {
+//			return true;
+//		}
+//			person se = (person) obj;
+//			return this.name.equals(se.name)&&this.age==se.age;
+//	}
 }
