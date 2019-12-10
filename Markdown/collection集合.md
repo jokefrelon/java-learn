@@ -308,7 +308,7 @@ class test {
 Set--:不允许重复元素,方法和collection相同.set集合只能用Iterator取出元素
 	|--Hashset:不保证存入和取出的顺序一致,不允许重复,效率高 
 			 |--LinkedHashSet:有序的HashSet表,不允许重复	
-	|--Treeset:可以对元素进行排序
+	|--Treeset:可以对元素进行排序,其排序方式需要元素具备比较功能,且实现CompareTo()方法,且不允许存储相同元素的方法是依据compareto()返回值是否为0,其数据结构为二叉树结构,
 ~~~
 
 
@@ -394,7 +394,9 @@ package sourceCode;
 
 public class person implements Comparable {
 ​~~~
+    略
 ​~~~
+    方法一:只能按年龄排序,忽略了姓名
 	public int compareTo(Object osi) {
 		person seao = (person) osi;
 		if(this.age>seao.age) {
@@ -403,11 +405,17 @@ public class person implements Comparable {
 		if(this.age<seao.age)
 			return -1;
 		return 0;
-		
 	}
+    
+​~~~
+    方法二:完美方案
+    public int compareTo(Object osi){
+        int temp = this.age-seao.age;
+        return temp==0?this.name.compareTo(osi.name):temp;
+    }
 ~~~
 
-改完以后,成功按照年龄(从小到大)排序
+按照方法二改完以后,成功按照年龄(从小到大)排序,并且同姓名,同年龄算一个人,不存进去
 
 
 
