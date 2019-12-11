@@ -19,7 +19,7 @@ public class diySavePerson {
 		set1.add("gethgghxsawrUs");
 		set1.add("zxcsdfsdff");
 		set1.add("ssr");
-		for (Object se: set1) {
+		for (Object se : set1) {
 			System.out.println(se);
 		}
 	}
