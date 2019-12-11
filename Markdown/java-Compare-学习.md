@@ -13,6 +13,7 @@ equals()方法是根类Object的默认方法,查看Object中equals()的默认实
 public boolean equals(Object obj) {
     return (this == obj);
     }
+✅
 ~~~
 
 可以看出没有重写过的equals()方法和==是一样的，都是比较两个对象引用指向的内存地址是否一样判断两个对象是否相等。
@@ -22,4 +23,16 @@ public boolean equals(Object obj) {
  **hashCode**是**JDK**根据对象的地址或者字符串或者数字计算该对象的哈希码值的方法。 
 
 **hashcode** 和 **equals** 两者必须同时重写。 
+
+<hr>
+
+注意在类中,有一些 **equals** 方法 **OverWrite** 时必须要传入 **Object** 类型
+
+~~~java
+public boolean equals (person obj){
+	return (this == obj);
+	}	
+❌
+//这样写就是错误的,equals()方法不允许传入非 Object 类
+~~~
 

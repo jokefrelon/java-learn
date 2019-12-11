@@ -1,4 +1,4 @@
-# **collection**集合
+# 🥰**collection**集合
 
 ~~~properties
 collection--|
@@ -66,36 +66,8 @@ List----
 ~~~
 
 
-### 2.2 List常见方法
 
-
-#### 1.增:
-
-~~~java
-add (index,element);
-~~~
-
-#### 2.删:
-
-~~~java
-remove (index);
-~~~
-
-#### 3.改:
-
-~~~java
-set (index,new-element);
-~~~
-
-#### 4.查:
-
-~~~java
-indexOf (element);
-element get(index);
-subList()
-~~~
-
-### 2.3  迭代器使用注意
+### 2.2  迭代器使用注意
 
 ~~~properties
 Exception in thread "main" java.util.ConcurrentModificationException
@@ -103,11 +75,11 @@ Exception in thread "main" java.util.ConcurrentModificationException
 	at java.util.ArrayList$Itr.next(Unknown Source)
 ~~~
 
-遇到这种在迭代器里还增加元素的时候,**JVM**会报错,这时候就需要用**ListIterator**
+遇到这种在使用迭代器时还修改迭代器内元素的时候,**JVM**会报错,这时候就需要用**ListIterator**
 
 
 
-### 2.4 犯错实记
+### 2.3 犯错实记😖:
 
 ~~~java
 package sourceCode;
@@ -228,13 +200,11 @@ List<person> dot = new ArrayList<person>();
 
 这就是因为没有掌握面向对象编程的思想,犯下的一个低级错误
 
-[重写 equals和hashcode](java-Compare-学习.md)
+#### [重写 equals和hashcode](java-Compare-学习.md)
 
+### 2.4 LinkedList
 
-
-### 2.5 LinkedList
-
-##### a.特有方法
+#### a.特有方法
 
 |   addFirst()    |  removeFirst()   |  getFirst()   |
 | :-------------: | :--------------: | :-----------: |
@@ -250,7 +220,7 @@ List<person> dot = new ArrayList<person>();
 | **offerLast()** | **pollLast()** | **peekLast()** |
 | #添加到最后一个 | #删除最后一个  | #获取最后一个  |
 
-##### b.实战演练
+#### b.实战演练
 
 实现  先进后出
 
@@ -317,7 +287,7 @@ Set--:不允许重复元素,方法和collection相同.set集合只能用Iterator
 
 **HashSet**主要就是靠**hashcode()**表来确定元素排列的,在使用时必须要重写**hashCode()**方法,而**hashCode()**方法内部又调用到了 **equals()**方法来解决**Hash冲突**,所以在使用时必须要**Overwrite**这两个方法
 
-### 3.1.1 HashSet使用实例
+#### 3.1.1 HashSet使用示例
 
 ~~~Java
 package sourceCode;
@@ -359,7 +329,7 @@ person类同上,这里仅写出 Overwrite 部分
 
 ### 3.2 TreeSet
 
-#### 3.2.1Comparable接口的学习
+#### 3.2.1 Comparable接口的学习
 
 ~~~properties
 Exception in thread "main" java.lang.ClassCastException: sourceCode.person cannot be cast to java.lang.Comparable
@@ -368,7 +338,7 @@ Exception in thread "main" java.lang.ClassCastException: sourceCode.person canno
 	at java.util.TreeSet.add(Unknown Source)
 ~~~
 
-这个异常对于学习TreeSet的我是一脸懵逼啊,啥啥啥啊,就报了个异常,再看看我这代码没有错啊,编辑器也没有报错啊!
+这个异常对于学习TreeSet的我是一脸懵逼啊💔,啥啥啥啊,就报了个异常,再看看我这代码没有错啊,编辑器也没有报错啊!
 
 ~~~java
 package sourceCode;
@@ -408,7 +378,7 @@ public class person implements Comparable {
 	}
     
 ​~~~
-    方法二:完美方案
+    方法二:完美方案😎
     public int compareTo(Object osi){
         int temp = this.age-seao.age;
         return temp==0?this.name.compareTo(osi.name):temp;
@@ -416,6 +386,149 @@ public class person implements Comparable {
 ~~~
 
 按照方法二改完以后,成功按照年龄(从小到大)排序,并且同姓名,同年龄算一个人,不存进去
+
+#### 3.2.2 实现**Comparator**接口示例
+
+当我们需要需要 对没有比较功能的元素进行排序时**or** 自定义元素排序方式时,我们就不能再依赖通过实现**Comparable**接口的**CompareTo()**方法,而是要自定义一个新的比较器
+
+##### 3.2.2.1 使用自定义的比较器对**TreeSet**排序
+
+~~~java
+package sourceCode;
+
+import java.util.Set;
+import java.util.TreeSet;
+
+public class diySavePerson {
+	public static void main(String[] args) {
+		Set t1 = new TreeSet(new diyCompare());
+		t1.add(new person(12,"frelon"));
+		t1.add(new person(29,"lion"));
+		t1.add(new person(29,"aion"));
+		t1.add(new person(19,"zoco"));
+		for(Object se : t1) {
+			System.out.println(se);
+		}
+	}
+}
+~~~
+
+~~~java
+package sourceCode;
+
+import java.util.Comparator;
+
+public class diyCompare implements Comparator<Object> {
+
+	@Override
+	public int compare(Object arg0, Object arg1) {
+
+		person p1 = (person) arg0;
+		person p2 = (person) arg1;
+
+		int temp = p1.getName().compareTo(p2.getName());
+		int temp2 = p1.getAge() - p2.getAge();
+
+		return temp == 0 ? temp2 : temp;
+	}
+
+}
+~~~
+
+##### 3.2.2.2 对根据字符长短排序
+
+下面的方案主要是根据名字的长短来排序的,如长短相同则根据名字的**hashCode**决定谁在前面
+
+~~~java
+package sourceCode;
+
+import java.util.Set;
+import java.util.TreeSet;
+
+public class diySavePerson {
+	public static void main(String[] args) {
+		Set<String> set1 = new TreeSet<String>( new diyCompare()); 
+		set1.add("jeAreF");
+		set1.add("jpwdth");
+		set1.add("jogeth");
+		set1.add("jokeme");
+		set1.add("jsrdds");
+		for (Object se: set1) {
+			System.out.println(se);
+		}
+	}
+}
+~~~
+
+~~~java
+package sourceCode;
+
+import java.util.Comparator;
+
+public class diyCompare implements Comparator<Object> {
+
+	@Override
+	public int compare(Object arg0, Object arg1) {
+		String str1 = (String)arg0;
+		String str2 = (String)arg1;
+		int temp1=str1.length()-str2.length();
+		int sss = str1.hashCode();
+		int ssd = str2.hashCode();
+		return temp1==0?sss-ssd:temp1;
+	}
+
+}
+~~~
+
+##### 3.2.3 三元运算符
+
+语法为：**条件表达式？表达式1：表达式2**。
+
+说明：问号前面的位置是判断的条件，判断结果为boolean型，为true时调用表达式1，为false时调用表达式2。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
