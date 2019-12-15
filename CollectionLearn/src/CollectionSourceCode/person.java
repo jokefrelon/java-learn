@@ -1,27 +1,36 @@
-package sourceCode;
+package CollectionSourceCode;
 
-public class student {
-	private String name;
+public class person implements Comparable {
 	private int age;
-	
-	public student(String name, int age) {
+	private String name;
+
+	public person(int age, String name) {
 		super();
-		this.name = name;
 		this.age = age;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
 		this.name = name;
 	}
+
 	public int getAge() {
 		return age;
 	}
+
 	public void setAge(int age) {
 		this.age = age;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "person [age=" + age + ", name=" + name + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -30,6 +39,7 @@ public class student {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -38,7 +48,7 @@ public class student {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		student other = (student) obj;
+		person other = (person) obj;
 		if (age != other.age)
 			return false;
 		if (name == null) {
@@ -48,11 +58,24 @@ public class student {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "student [name=" + name + ", age=" + age + "]";
-	}
-
 	
+	public int compareTo(Object osi) {
+		person seao = (person) osi;
+		if(this.age>seao.age) {
+			return 1;
+		}
+		if(this.age<seao.age)
+			return -1;
+		return 0;
+		
+	}
+	
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this==obj) {
+//			return true;
+//		}
+//			person se = (person) obj;
+//			return this.name.equals(se.name)&&this.age==se.age;
+//	}
 }

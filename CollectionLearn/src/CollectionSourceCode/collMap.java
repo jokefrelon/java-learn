@@ -1,9 +1,10 @@
-package sourceCode;
+package CollectionSourceCode;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class collMap {
@@ -15,15 +16,19 @@ public class collMap {
 		Set<Integer> keySet = se.keySet();
 		for (Iterator<Integer> iter = keySet.iterator(); iter.hasNext();) {
 			Integer ssr = (Integer) iter.next();
-			System.out.println(se.get(ssr));
+			System.out.println(ssr+"~~~~~"+se.get(ssr));
 		}
 		System.out.println("~~~~~~~~~~~");
-		Set<Map.Entry<Integer, String>> Solo = se.entrySet();
-		for (Iterator<Map.Entry<Integer, String>> itera = Solo.iterator(); itera.hasNext();) {
-			Map.Entry<Integer, String> me = itera.next();
+		
+		Set<Entry<Integer, String>> Solo = se.entrySet();
+		for (Iterator<Entry<Integer, String>> itera = Solo.iterator(); itera.hasNext();) {
+			Entry<Integer, String> me = itera.next();
 			Integer er =me.getKey();
 			String  sun =me.getValue();
 			System.out.println(er+"::::"+sun);			
+		}
+		for(Entry<Integer, String> obj:Solo) {
+			System.out.println(obj.getKey()+"~~~~~"+obj.getValue());
 		}
 		System.out.println("~~~~~~~~~~~");
 		Collection<String> value = se.values();

@@ -1,4 +1,4 @@
-package sourceCode;
+package CollectionSourceCode;
 
 public class sex {
 	private String sexs;
