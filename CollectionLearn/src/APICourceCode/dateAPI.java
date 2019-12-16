@@ -1,14 +1,22 @@
 package APICourceCode;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class dateAPI {
 	public static void main(String[] args) {
 		Date date = new Date();
-		DateFormat ses = DateFormat.getDateTimeInstance();
+		
+		DateFormat a = DateFormat.getDateInstance(DateFormat.LONG);
+		DateFormat ses = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+		
+		ses = new SimpleDateFormat("yyyy/MM/dd HH-mm-ss");
+		
 		String sesa = ses.format(date);
-		System.out.println(sesa);
+		String b = a.format(date);
+		
+		System.out.println(sesa+"~~~"+b);
 		
 	}
 }
