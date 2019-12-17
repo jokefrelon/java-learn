@@ -18,7 +18,6 @@ public class dateAPI {
 		DateFormat ses = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
 		String sesa = ses.format(date);
 		System.out.println(sesa);
-		
 	}
 }
 ~~~

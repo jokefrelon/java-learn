@@ -8,8 +8,14 @@ public class fileClass {
 		
 		File se = new File("D:\\Frelon.txt");
 		File we = new File("D:\\","sda.py");
+		System.out.println(se+"~~~~"+we);
+		
 		File dir = new File("D:\\KW"+File.separator);
 		File sdCard = new File (dir,"a.java");
-		sdCard.createNewFile();
+		if(sdCard.createNewFile()) {
+			System.out.println("Create File Successfully ! "+sdCard);
+		}else {
+			System.out.println("Filed!");
+		}
 	}
 }

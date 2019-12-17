@@ -19,12 +19,92 @@ public class fileClass {
 		
 		File se = new File("D:\\Frelon.txt");
 		File we = new File("D:\\","sda.py");
+		System.out.println(se+"~~~~"+we);
+		
 		File dir = new File("D:\\KW"+File.separator);
 		File sdCard = new File (dir,"a.java");
-		sdCard.createNewFile();
+		if(sdCard.createNewFile()) {
+			System.out.println("Create File Successfully ! "+sdCard);
+		}else {
+			System.out.println("Filed!");
+		}
 	}
 }
 ~~~
+
+
+
+### 1.2 **File**类常见方法
+
+#### 1.2.1 获取文件路径
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+
+public class filePath {
+	public static void main(String[] args) {
+		File file = new File("a.sh");
+		String str = file.getAbsolutePath();
+		String str1 = file.getPath();
+		System.out.println(str+"~~~~~"+str1);
+	}
+}
+​~~~~~~~~~~~~~~~~~~
+D:\github\Hadoop_build\JavaLearn\a.sh~~~~~a.sh
+~~~
+
+getPath()只是获取相对路径<程序在哪运行,路径就是那里>
+
+getAbsolutePath()表示获取绝对路径
+
+#### 1.2.2 获取文件修改时间
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.text.DateFormat;
+import java.util.Date;
+
+public class filePath {
+	public static void main(String[] args) {
+		File file = new File(".classpath");
+		Long lon = file.lastModified();
+		Date date = new Date(lon);
+		String mod_time = DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.LONG).format(date);
+		System.out.println(lon+" >>>>> "+mod_time);
+	}
+}
+~~~
+
+~~~log
+1575876750643 >>>>> 2019年12月9日 下午03时32分30秒
+~~~
+
+该方法并不困难,稍稍有难度的是如何把获取到的 **Long** 类型的数字转化为具体的时间
+
+~~~java
+Date date = new Date(1575876750643l);
+DateFormat time = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+String str = time.format(date);
+System.out.println(str);
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
