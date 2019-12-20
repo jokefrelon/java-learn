@@ -94,9 +94,55 @@ System.out.println(str);
 
 
 
+#### 1.2.3 常见操作
 
+~~~Java
+boolean boof = file.createNewFile();     
+boolean boo  = file.canExecute();        
+boolean booa = file.canRead();           
+boolean bood = file.canWrite();          
+boolean booh = file.exists();            
+boolean booj = file.isAbsolute();        
+boolean book = file.isDirectory();       
+boolean bool = file.isFile();            
+boolean booz = file.isHidden();          
+~~~
 
+认识即可,没有难度
 
+#### 1.2.4 获取文件夹内容
+
+当操作文件夹时,肯定要知道这个文件夹里面有什么东西,我们才好操作,常用的方法有两种 **list()** , **listFile()** 但是建议用后者,因为**list()** 有的它也有,他有的方法**list()**没有
+
+~~~Java
+package Java_IO;
+
+import java.io.File;
+
+public class visitFile {
+	public static void main(String[] args) {
+		File alean = new File("c:\\");
+		if (alean.exists()) {
+			String[] dd = alean.list();
+			for (String ss : dd) {
+				System.out.println(ss);
+			}
+System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
+			File[] fo = alean.listFiles();
+			for (File fs : fo) {
+				if(fs.getName().contains("Logs")) {
+					System.out.println(fs+" ~~~ "+fs.getName());
+				}
+			}
+System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
+			Long sis = alean.getFreeSpace();
+			System.out.println(alean + " " + sis / Math.pow(1024, 3) + "Gb" + " free!");
+		} else {
+			System.out.println("No this file");
+		}
+	}
+}
+~~~
 
 
 
