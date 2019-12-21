@@ -5,7 +5,7 @@ import java.nio.file.NoSuchFileException;
 
 public class deleteFiles {
 	public static void main(String[] args) throws NoSuchFileException {
-		File dir = new File("D:\\KWS");
+		File dir = new File("c:\\files");
 		removeFiles(dir);
 	}
 	public static void removeFiles(File se) throws NoSuchFileException {

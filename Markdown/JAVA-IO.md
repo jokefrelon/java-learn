@@ -285,7 +285,156 @@ public void show(){
 
 #### 1.3.1 使用递归删除📂
 
+~~~java
+package Java_IO;
 
+import java.io.File;
+import java.nio.file.NoSuchFileException;
 
+public class deleteFiles {
+	public static void main(String[] args) throws NoSuchFileException {
+		File dir = new File("D:\\KWS");
+		removeFiles(dir);
+	}
+	public static void removeFiles(File se) throws NoSuchFileException {
+		File [] wow = se.listFiles();
+		for(File wo : wow) {
+			if(!wo.exists()) {
+				throw new NoSuchFileException(null);
+			}
+			if(wo.isDirectory()) {
+				removeFiles(wo);
+			}else {
+				Boolean esc = wo.delete();
+				System.out.println("delete the file "+wo+" "+esc);
+			}
+		}
+		Boolean esc = se.delete();
+		System.out.println("delete the file "+se+" "+esc);
+	}
+}
+~~~
 
+递归删除很简单,只是需要注意,这个删除是不经过回收站的,会被直接删除,不可找回
 
+还有就是需要判断该 📂有没有权限访问,要不然会报 **java.lang.NullPointerException** 异常,甚至还需要我们自己来抛一些 **IO** 异常
+
+### 1.4 向📄内写入内容
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class writeIntoFile {
+	private static final String Line_separator = System.getProperty("line.separator");
+
+	public static void main(String[] args) throws IOException {
+		File dir = new File("c:\\tempfile");
+		if(!dir.exists()) {
+			dir.mkdir();
+		}
+		String str ="i Love Java";
+		FileOutputStream fops = null;
+		try {
+			fops = new FileOutputStream("c:\\tempfile\\fops.java",true);
+			String ssr = Line_separator+"Hello World"+Line_separator;
+			fops.write(ssr.getBytes());
+			fops.write(str.getBytes());
+			fops.write(ssr.getBytes());
+			System.out.println("写入成功");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(fops!=null) {}
+			fops.close();
+		}
+	}
+}
+~~~
+
+写入内容很容易,只需要调用一下**write()**方法即可,但是难点就是处理各种**Exception** ,我们需要考虑到各种各样的异常
+
+比如 FileNotFoundException,,,NullPointerException等等等, 因为一旦出现了这些问题我们的代码可能就占用了相关的系统资源,但是程序执行失败后,我们并没有释放该资源,如此循环往复就会导致系统的卡慢,甚至死机重启,这里我们经常使用**try catch finally** 方法来解决,需要执行的代码放在**try** 里面,在**finally** 里面放 **close()**方法,保证我们的代码在申请完资源以后,无论是否报错,都可以被释放掉,还有一点就是如果我们使用 **try catch finally** 那我们一定不能在**try**里面 **new** 对象,因为到时候**finally** 关闭资源时会**找不到对象** 🤣的
+
+还有**write()** 方法是会覆盖掉文件内部的内容的,如果我们需要在当前内容上继续添加内容,那就需要在创建对象时加一个**true** 表示续写该文件,代码如下
+
+~~~java
+FileOutputStream fops = new FileOutputStream("c:\\tempfile\\fops.java",true);
+~~~
+
+### 1.5 前4 part练习
+
+需求:
+
+~~~
+获取某个📂内所有文件的集合
+获取该📂内某个📂内的.txt文件,并存储到集合中打印🖨出来
+~~~
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
+
+public class IO_Test1 {
+	public static void main(String[] args) {
+		File dir = new File("c:\\tempfile");
+
+		List<String> list = new ArrayList<String>();
+
+		fileFilterByName filter = new fileFilterByName(".txt");
+
+		getFile(dir, filter, list);
+
+		for (String ser : list) {
+			System.out.println(ser);
+		}
+	}
+
+	private static void getFile(File file, fileFilterByName filter, List<String> list) {
+		File[] fileName = file.listFiles();
+		for (File se : fileName) {
+			if (se.isDirectory()) {
+				getFile(se, filter, list);
+			} else {
+				if (filter.accept(se)) {
+					list.add(se.getPath());
+				}
+			}
+		}
+	}
+}
+​~~~~~~~~~~~~~~~~~~~~
+package Java_IO;
+
+import java.io.File;
+import java.io.FileFilter;
+
+public class fileFilterByName implements FileFilter {
+	private String str;
+    
+	public fileFilterByName(String str) {
+		super();
+		this.str = str;
+	}
+    
+	public fileFilterByName() {
+		super();
+	}
+	
+	
+	@Override
+	public boolean accept(File arg0) {
+		return arg0.getName().endsWith(this.str);
+	}
+
+}
+~~~
+
+给自己点个赞👍,我真厉害🥰
