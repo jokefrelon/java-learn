@@ -1,4 +1,4 @@
-# Java-IO
+# Java-IO💻
 
 Java Input-Output 主要是用于文件的存储和读取,相关操作一般都会放在Java.io包中
 
@@ -146,9 +146,144 @@ System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
 
 
 
+#### 1.2.5 文件过滤器
+
+~~~Java
+File[] str1  =  dir.listFiles(new fileFilterByName());
+for (File strr : str1) {
+	System.out.println(strr);
+}
+​~~~~
+package Java_IO;
+
+import java.io.File;
+import java.io.FileFilter;
+
+public class fileFilterByName implements FileFilter {
+	@Override
+	public boolean accept(File arg0) {
+		return arg0.isDirectory();
+	}
+}
+~~~
+
+它可以过滤出该📂内的📂,还可以过滤出📂内的📄,只需要把 **fileFilterByName** の **accept()** 方法改一下即可
+
+~~~java 
+public boolean accept(File arg0) {
+	return arg0.isDirectory();
+//	return arg0.isFile();
+//  return arg0.isFile();
+//  return arg0.getName().endSWith(".java")
+}
+~~~
 
 
 
+##### 1.2.5.1 文件名过滤器
+
+~~~Java
+package Java_IO;
+
+import java.io.File;
+import java.io.FilenameFilter;
+
+public class filterByName implements FilenameFilter {
+	private String se="";
+	
+	public filterByName(String se) {
+		super();
+		this.se = se;
+	}
+	public filterByName() {
+		super();
+	}
+	
+	@Override
+	public boolean accept(File arg0, String arg1) {
+		
+		return arg1.endsWith(se);
+	}
+
+}
+​~~~~~~~~~~~~~~~~~~~~~~
+package Java_IO;
+
+import java.io.File;
+
+public class FileFilter {
+	public static void main(String[] args) {
+		File file = new File("D:\\hadoop-2.8.5");
+		String[] str = file.list(new filterByName(".txt"));
+		for (String name : str) {
+			System.out.println(name);
+		}
+	}
+}
+
+~~~
+
+这种过滤器不常用,因为需要一个过滤器实现**FileNameFilter**, 实际coding 我们可以使用**FileFilter** 替代,它不仅仅可以过滤文件夹📂还可以过滤文件📃
+
+### 1.3 递归 获取📂内的内容
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+
+public class getAllFiles {
+
+	public static void main(String[] args) throws IOException {
+		File dir = new File("D:\\github");
+		getAllFile(dir);
+	}
+
+	public static void getAllFile(File se) throws IOException {
+		File[] dir1 = se.listFiles();
+		if(!se.exists()) {
+			throw new NoSuchFileException("No such Path");
+		}
+		for (File der : dir1) {
+			if (der.isDirectory()) {
+				getAllFile(der);
+			} else {
+				System.out.println("Visited " + der);
+			}
+		}
+	}
+}
+~~~
+
+什么是递归?
+
+其实 递归就是在方法内部调用该方法,该方法不断地进栈,在使用递归时,一定要有判断条件,否则一直递归下去会导致内存溢出
+
+~~~java
+public void met(){
+	void show();
+}
+
+public void show(){
+	void met();
+}
+~~~
+
+这就是一种递归,但是它是错误❌的递归,两个方法相互调用会导致栈内存溢出,
+
+
+
+~~~java
+public void show(){
+	void show();
+}
+~~~
+
+这也是一种错误❌的递归,方法内部无线调用自己✌会导致栈内存溢出
+
+#### 1.3.1 使用递归删除📂
 
 
 
