@@ -319,53 +319,7 @@ public class deleteFiles {
 
 还有就是需要判断该 📂有没有权限访问,要不然会报 **java.lang.NullPointerException** 异常,甚至还需要我们自己来抛一些 **IO** 异常
 
-### 1.4 向📄内写入内容
-
-~~~java
-package Java_IO;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-public class writeIntoFile {
-	private static final String Line_separator = System.getProperty("line.separator");
-
-	public static void main(String[] args) throws IOException {
-		File dir = new File("c:\\tempfile");
-		if(!dir.exists()) {
-			dir.mkdir();
-		}
-		String str ="i Love Java";
-		FileOutputStream fops = null;
-		try {
-			fops = new FileOutputStream("c:\\tempfile\\fops.java",true);
-			String ssr = Line_separator+"Hello World"+Line_separator;
-			fops.write(ssr.getBytes());
-			fops.write(str.getBytes());
-			fops.write(ssr.getBytes());
-			System.out.println("写入成功");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(fops!=null) {}
-			fops.close();
-		}
-	}
-}
-~~~
-
-写入内容很容易,只需要调用一下**write()**方法即可,但是难点就是处理各种**Exception** ,我们需要考虑到各种各样的异常
-
-比如 FileNotFoundException,,,NullPointerException等等等, 因为一旦出现了这些问题我们的代码可能就占用了相关的系统资源,但是程序执行失败后,我们并没有释放该资源,如此循环往复就会导致系统的卡慢,甚至死机重启,这里我们经常使用**try catch finally** 方法来解决,需要执行的代码放在**try** 里面,在**finally** 里面放 **close()**方法,保证我们的代码在申请完资源以后,无论是否报错,都可以被释放掉,还有一点就是如果我们使用 **try catch finally** 那我们一定不能在**try**里面 **new** 对象,因为到时候**finally** 关闭资源时会**找不到对象** 🤣的
-
-还有**write()** 方法是会覆盖掉文件内部的内容的,如果我们需要在当前内容上继续添加内容,那就需要在创建对象时加一个**true** 表示续写该文件,代码如下
-
-~~~java
-FileOutputStream fops = new FileOutputStream("c:\\tempfile\\fops.java",true);
-~~~
-
-### 1.5 前4 part练习
+### 1.4 前三 part 测试
 
 需求:
 
@@ -438,3 +392,197 @@ public class fileFilterByName implements FileFilter {
 ~~~
 
 给自己点个赞👍,我真厉害🥰
+
+## 2 FileOutputStream 向📄内写入内容
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class writeIntoFile {
+	private static final String Line_separator = System.getProperty("line.separator");
+
+	public static void main(String[] args) throws IOException {
+		File dir = new File("c:\\tempfile");
+		if(!dir.exists()) {
+			dir.mkdir();
+		}
+		String str ="i Love Java";
+		FileOutputStream fops = null;
+		try {
+			fops = new FileOutputStream("c:\\tempfile\\fops.java",true);
+			String ssr = Line_separator+"Hello World"+Line_separator;
+			fops.write(ssr.getBytes());
+			fops.write(str.getBytes());
+			fops.write(ssr.getBytes());
+			System.out.println("写入成功");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(fops!=null) {}
+			fops.close();
+		}
+	}
+}
+~~~
+
+写入内容很容易,只需要调用一下**write()**方法即可,但是难点就是处理各种**Exception** ,我们需要考虑到各种各样的异常
+
+比如 FileNotFoundException,,,NullPointerException等等等, 因为一旦出现了这些问题我们的代码可能就占用了相关的系统资源,但是程序执行失败后,我们并没有释放该资源,如此循环往复就会导致系统的卡慢,甚至死机重启,这里我们经常使用**try catch finally** 方法来解决,需要执行的代码放在**try** 里面,在**finally** 里面放 **close()**方法,保证我们的代码在申请完资源以后,无论是否报错,都可以被释放掉,还有一点就是如果我们使用 **try catch finally** 那我们一定不能在**try**里面 **new** 对象,因为到时候**finally** 关闭资源时会**找不到对象** 🤣的
+
+还有**write()** 方法是会覆盖掉文件内部的内容的,如果我们需要在当前内容上继续添加内容,那就需要在创建对象时加一个**true** 表示续写该文件,代码如下
+
+~~~java
+FileOutputStream fops = new FileOutputStream("c:\\tempfile\\fops.java",true);
+~~~
+
+## 3 FileInputStream 读取📄内容
+
+FileInputStream类和FileOutputStream类有许多的共同点,都需要传一个File类的对象(new 对象时要保证Path✔无误,要不然很容易造成空指针异常) 还有就是在使用完资源以后要及时释放掉资源,还有要注意的是异常の处理,如果没有处理好异常也会导致我们无法释放掉资源,导致程序占用过多的系统资源,使系统卡慢
+
+### 3.1❌read() 入门级读取
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public class readFile {
+	private static final int LIMSize = 8192;
+
+	public static void main(String[] args) throws IOException {
+		File dir = new File("c:\\tempfile\\fops.java");
+
+		FileInputStream fipts = new FileInputStream(dir);
+
+		int byt;
+		while ((byt = fipts.read()) != -1) {
+			System.out.println(byt);
+		}
+
+		fipts.close();
+	}
+}        
+~~~
+
+日常开发中,基本上用不上 PASS ❌
+
+### 3.2❌read() 初级读取
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public class readFile {
+	private static final int LIMSize = 8192;
+
+	public static void main(String[] args) throws IOException {
+		File dir = new File("c:\\tempfile\\fops.java");
+		byte[] buf = new byte[2];
+
+		FileInputStream fip = new FileInputStream(dir);
+
+		int len = fip.read(buf);
+		System.out.println(len + "~~~" + new String(buf));
+
+		fip.close();
+	}
+}            
+~~~
+
+日常开发中,基本上用不上 PASS ❌
+
+### 3.3 ✔ read() 进阶级读取
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public class readFile {
+	private static final int LIMSize = 8192;
+
+	public static void main(String[] args) throws IOException {
+		File dir = new File("c:\\tempfile\\fops.java");
+				FileInputStream fips = new FileInputStream(dir);
+		byte[] by = new byte[LIMSize];
+
+		int length = 0;
+
+		while ((length = fips.read(by)) != -1) {
+			System.out.println(new String(by, 0, length));
+		}
+		fips.close();
+
+	}
+}
+~~~
+
+日常开发中可以使用,✔建议根据需要改变缓冲区的大小,一般建议设置成 :8192
+
+### 3.4 ✔ read()高级读取
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public class readFileAdvantage {
+	public static void main(String[] args) throws IOException {
+		File dir = new File("c:\\tempfile\\fops.java");
+		FileInputStream fips = new FileInputStream(dir);
+		byte [] byt = new byte [fips.available()];
+		fips.read(byt);
+		System.out.println(new String(byt));
+		fips.close();
+	}
+}
+~~~
+
+✔这种是我比较喜欢的一种方法,简洁好用,也不用考虑缓冲区大小😀,而且一般File对象没有问题也就不会出错啊(相对于前面几个),这是重点✔,圈起来!下次会考!!!
+
+但是!!但是!!但是! 这种方法只是比较适合处理比较小的文件,如果处理好几个G的文件,当场挂..所以呢,还是 进阶 和 高级 一起用
+
+## 4 FileOutputStream和FileInputStream一起读写文件
+
+### 4.1入门级写法
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class IO_CopyFile {
+
+	public static void main(String[] args) throws IOException {
+		File dir = new File("C:\\tempfile\\fops.java");
+		FileInputStream fis = new FileInputStream(dir);
+
+		File dir1 = new File("C:\\tempfile\\fops.txt");
+		FileOutputStream fos = new FileOutputStream(dir1);
+		int len = 0;
+		while ((len = fis.read()) != -1) {
+			fos.write(len);
+		}
+		fis.close();
+		fos.close();
+	}
+}
+~~~
+
+不推荐这种写法,因为效率比较低

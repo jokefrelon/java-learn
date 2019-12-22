@@ -12,14 +12,16 @@ public class writeIntoFile {
 		if(!dir.exists()) {
 			dir.mkdir();
 		}
-		String str ="i Love Java";
+		String str ="i Love Java"+Line_separator;
+		String ssr = Line_separator+"Hello World"+Line_separator;
 		FileOutputStream fops = null;
+
 		try {
 			fops = new FileOutputStream("c:\\tempfile\\fops.java",true);
-			String ssr = Line_separator+"Hello World"+Line_separator;
+			
 			fops.write(ssr.getBytes());
 			fops.write(str.getBytes());
-			fops.write(ssr.getBytes());
+			fops.write(89);
 			
 			System.out.println("–¥»Î≥…π¶");
 		} catch (IOException e) {

@@ -1,13 +1,15 @@
 package Java_IO;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class IO_Test1 {
 	public static void main(String[] args) {
 		File dir = new File("c:\\tempfile");
+		if(!dir.exists()) {
+			dir.mkdir();
+		}
 
 		List<String> list = new ArrayList<String>();
 
