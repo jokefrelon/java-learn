@@ -557,7 +557,7 @@ public class readFileAdvantage {
 
 ## 4 FileOutputStream和FileInputStream一起读写文件
 
-### 4.1入门级写法
+### 4.1 低级写法
 
 ~~~java
 package Java_IO;
@@ -585,4 +585,125 @@ public class IO_CopyFile {
 }
 ~~~
 
-不推荐这种写法,因为效率比较低
+不推荐这种写法,因为效率比较低,读取一个写入一个,太浪费时间
+
+### 4.2 高级写法
+
+~~~java
+package Java_IO;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import APICourceCode.dateAPI;
+
+public class copyFileByBuf {
+	public static void main(String[] args) throws IOException {
+		dateAPI date = new dateAPI();
+		date.getDate();
+		File dir = new File("d:\\tempfile\\idea.exe");
+		FileOutputStream fos = null;
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(dir);
+			fos = new FileOutputStream("d:\\tempfile\\idea.wilu");
+
+			byte[] buf = new byte[10240];
+
+			int len = 0;
+			while ((len = fis.read(buf)) != -1) {
+				fos.write(buf, 0, len);
+			}
+		} catch (IOException e) {
+			throw new IOException();
+		} finally {
+			fis.close();
+			fos.close();
+			date.getDate();
+			System.out.println("Copy Over");
+		}
+
+	}
+}
+
+~~~
+
+我无聊就试了试,这个**byte** 数组の长度对**IO** の性能影响有多大,就把长度从10,102,1024,2048,4096,8192,10240 都试了个遍,得出以下答案:
+
+| 时间\byte长度 |    10    |   102    |   1024   |   2048   |   4096   |   8192   |  10240   |  20480   |
+| :-----------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
+|     Start     | 19:38:27 | 19:53:42 | 19:54:52 | 19:55:50 | 19:56:25 | 19:57:05 | 19:57:40 | 19:58:16 |
+|     Stop      | 19:44:33 | 19:54:19 | 19:54:57 | 19:55:54 | 19:56:28 | 19:57:08 | 19:57:42 | 19:58:18 |
+|     time      |   366s   |   37s    |    5s    |    4s    |    3s    |    3s    |    2s    |    2s    |
+
+测试所使用的文件大小为: 584935KB 大约是571MB
+
+可以看出byte数组的长度也是越大越好的,只要你内存足够大,磁盘性能足够强,理论上是可以做到一秒内复制任何文件的,可是!! 科技日益发达的今天电脑内存和磁盘还依然是一个瓶颈,有待我们突破啊,So 为了适应各种大小的文件,还是选择大小为**8192** 或者**10240** 也是可以的
+
+
+
+## 5 Buffer缓冲区
+
+buffer原理就是调用一片内存,作为缓冲区,然后再为FileInput/OutputStream使用,原理和上面的相似
+
+### 5.1 使用示例
+
+~~~java
+package Java_IO;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class buffer {
+	public static void main(String[] args) throws IOException {
+				copyfile();
+	}
+	public static void copyfile() throws IOException {
+		File dir  = new File("d:\\LinuxSoftware_VariedOS\\Python-3.8.0.tgz");
+		
+		FileInputStream pis = new FileInputStream(dir);
+		FileOutputStream pos = new FileOutputStream("d:\\tempfile\\Python.wilu");
+		
+		BufferedInputStream bufpis = new BufferedInputStream(pis);
+		BufferedOutputStream bufpos = new BufferedOutputStream(pos);
+		
+		byte [] buf = new byte[8192];
+		int len = 0;
+		while((len=bufpis.read(buf))!=-1) {
+			bufpos.write(buf,0,len);
+		}
+		bufpis.close();
+		bufpos.close();
+		System.out.println("Copy over");
+	}  
+}
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
