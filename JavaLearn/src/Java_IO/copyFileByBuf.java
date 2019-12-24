@@ -11,12 +11,12 @@ public class copyFileByBuf {
 	public static void main(String[] args) throws IOException {
 		dateAPI date = new dateAPI();
 		date.getDate();
-		File dir = new File("d:\\tempfile\\idea.exe");
+		File dir = new File("D:\\LinuxSoftware_VariedOS\\jdk-8u231-linux-x64.tar.gz");
 		FileOutputStream fos = null;
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(dir);
-			fos = new FileOutputStream("d:\\tempfile\\idea.wilu");
+			fos = new FileOutputStream("D:\\tempfile\\jdk8.wuli");
 
 			byte[] buf = new byte[8192];
 

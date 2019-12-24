@@ -1,4 +1,4 @@
-# Java-IO💻
+# Java-IO💻 Part 1
 
 Java Input-Output 主要是用于文件的存储和读取,相关操作一般都会放在Java.io包中
 
@@ -687,6 +687,137 @@ public class buffer {
 
 
 
+## 6 字符读写
+
+### 6.1 使用 I/O-Stream-Reader/Writer
+
+由于中文一个字符占两字节,所以我们不能像读写英文那样,直接操作数据了,
+
+~~~java
+package Java_IO;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+public class StreamReader {
+	public static void main(String[] args) throws IOException {
+		FileInputStream fis = new FileInputStream("D:\\tempfile\\fpos.java");
+		FileOutputStream fos = new FileOutputStream("D:\\tempfile\\pofs.c",true);
+		
+		InputStreamReader isr = new InputStreamReader(fis);
+		OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
+		
+		int in ;
+		while((in = isr.read()) != -1) {
+			osw.write(in);
+		}
+		
+		isr.close();
+		osw.close();
+		System.out.println("Copy over");
+	}
+}
+~~~
+
+中文处理时比较的麻烦,因为各种电脑支持的编码可能不一样,就导致乱码问题,这时候我们在**new** 对象的时候就需要指定我们所需要的编码方式,今天就因为编码就倒腾了半天的时间⏰
+
+所以为了保险起见,在创建 **FileOutputStream** 的时候还是加上 **UTF-8** 好一点
+
+### 6.2 FileReader/FileWriter类
+
+**FileReader/FileWriter** 其实就是简化了**FileOutputStream** ＆ **FileOutputStream** の 使用过程,但是缺点( •̀ ω •́ )y 非常明显,就是不支持设置编码方式,默认的是 **ISO-8859-1 or US-ASCII** ,非常容易导致乱码 ~%?…,# *'☆&℃$︿★?
+
+处理乱码也不难,就是不用这个类 🤣
+
+way 1 
+
+~~~java
+BufferedWriter writer = new BufferedWriter (new OutputStreamWriter (new FileOutputStream (filePath,true),"UTF-8"));
+~~~
+
+虽然这也是一种解决办法吧,但是如果一点要用的话那就只能用下面这种方法了
+
+way 2
+
+~~~java
+Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream ("String"), "UTF-8"));
+~~~
+
+让**FileWriter** 继承 **Write** の 编码方式,不过也不好用
+
+
+
+#### 6.2.1 FileReader /  FileWrite 初级写法
+
+~~~java
+package Java_IO;
+
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+public class fileWriter {
+	public static void main(String[] args) throws IOException {
+		FileOutputStream fos = new FileOutputStream("D:\\tempfile\\pofs.c");
+		OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
+		
+		FileReader fr = new FileReader("D:\\tempfile\\fpos.java");
+		FileWriter fw = new FileWriter("D:\\tempfile\\pofs.c");
+		
+		int in;
+		while((in=fr.read())!=-1) {
+			fw.write((char)in);
+		}
+		fr.close();
+		System.out.println(fw.getEncoding());
+		fw.close();
+		osw.close();
+		System.out.println("Copy over");
+	}
+}
+~~~
+
+
+
+
+
+
+#### 6.2.2 FileReader /  FileWrite 高级写法
+~~~java
+package Java_IO;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class IO_SimplifyChinese {
+	public static void main(String[] args) throws IOException {
+		copyChineseChar();
+	}
+	public static void copyChineseChar() throws IOException {
+		FileReader fr = new FileReader("D:\\LinuxSoftware_VariedOS\\jdk-8u231-linux-x64.tar.gz");
+		FileWriter fw = new FileWriter("D:\\tempfile\\jdk8.wuli");
+		
+		char [] chara = new char[2048];
+		int len ;
+		while ((len=fr.read(chara))!= -1) {
+			fw.write(chara,0,len);
+		}
+		fr.close();
+		fw.close();
+		System.out.println("copy over");
+	}
+}
+~~~
+
+
+
+### 6.3 BufferedReader / BufferedWriter
 
 
 
@@ -706,4 +837,75 @@ public class buffer {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Final	写在最后:
+
+在经过学习后,我发现字节流和字符流都用于复制文件,但字符流的出现主要是为了解决与字符相关的问题,所以不适合复制文件(编码原因),字符流复制文件时可能会出现莫名其妙的问题导致复制后的文件破损无法使用,但字节流就不存在这种问题所以得出
+
+~~~properties
+复制文件时使用字节流:复制文本文件时使用字符流
+~~~
 
