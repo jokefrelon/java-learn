@@ -819,91 +819,48 @@ public class IO_SimplifyChinese {
 
 ### 6.3 BufferedReader / BufferedWriter
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+主要是利用缓冲区来提高读写效率,也没有啥难处,会用就可以了
+
+~~~java
+package Java_IO;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Buffered_IO {
+	public static void main(String[] args) throws IOException {
+		buff();
+	}
+	public static void buff() throws IOException {
+		FileReader fr = new FileReader("D:\\tempfile\\fos.java");
+		BufferedReader br = new BufferedReader(fr);
+		
+		FileWriter fw = new FileWriter("D:\\tempfile\\copyed_fos.wuli");
+		BufferedWriter bw = new BufferedWriter(fw);
+		
+		char [] chara = new char[2048];
+		
+		int in ;
+		while((in=fr.read(chara))!= -1) {
+			bw.write(chara,0,in);
+		}
+		br.close();
+		bw.close();
+		System.out.println("Copy over");
+	}
+}
+
+~~~
 
 
 
 ## Final	写在最后:
 
 在经过学习后,我发现字节流和字符流都用于复制文件,但字符流的出现主要是为了解决与字符相关的问题,所以不适合复制文件(编码原因),字符流复制文件时可能会出现莫名其妙的问题导致复制后的文件破损无法使用,但字节流就不存在这种问题所以得出
+
 
 ~~~properties
 复制文件时使用字节流:复制文本文件时使用字符流
