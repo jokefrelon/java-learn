@@ -249,17 +249,17 @@ public class MainOfApplication { }
 
   ⅰ用法:标注在某个类上,以开启该类的自动配置功能
 
-  ⅱ原理:将主配置类(@SpringBootApplication标记的类)所在的包以及下面的子包里的所有组件都扫描到 **Spring** 容器中
+  ⅱ原理:将主配置类( **@SpringBootApplication** 标记的类)所在的包以及下面的子包里的所有组件都扫描到 **Spring** 容器中
 
   ⅲ来源:该属性可追述到它的父类注解👇
 
-  - @import(AutoConfigurationPackages.Registrar.class)
+  - **@import(AutoConfigurationPackages.Registrar.class)**
 
-    @import是Spring的底层注解,给容器导入一个由AutoConfigurationPackages.Registrar.class决定の组件,
+    @import是Spring的底层注解,给容器导入一个由 **AutoConfigurationPackages.Registrar.class** 决定の组件,
 
-- import (EnableAutoConfigurationImportSelector.class);
+- **import (EnableAutoConfigurationImportSelector.class)**;
 
-  给容器中导入的组件都是由EnableAutoConfigurationImportSelector所决定の,然后EnableAutoConfigurationImportSelector.class再返回◀一个类全名的数组,在该数组里的都会被导入;其效果就是给容器中导入自动配置类(xxxAutoConfiguration),并配置好这些组件
+  给容器中导入的组件都是由EnableAutoConfigurationImportSelector所决定の,然后**EnableAutoConfigurationImportSelector.class** 再返回◀一个类全名的数组,在该数组里的都会被导入;其效果就是给容器中导入自动配置类(xxxAutoConfiguration),并配置好这些组件
 
 ### 2.3知识点小结
 
@@ -269,7 +269,9 @@ public class MainOfApplication { }
 
 ⑵主程序类必须要用 **@SpringBootApplication** 标注,然后调用SpringApplication.run(xxx.class,arg1)来开始 **Spring Boot Application** 
 
-⑶
+⑶**Spring Boot** 在启动的时候从类路径下的 **META-INF/spring.factories** 文件中获取 **EnableAutoConfiguration** 指定的值,将这些值作为自动配置类导入到容器中,自动配置类就生效,帮我们进行自动配置
+
+所以这个 **spring-boot-autoconfigure-2.2.2.RELEASE.jar** 是我们开发中最(❤ ω ❤)喜欢的JavaEE开发 jar 包
 
 ------
 
