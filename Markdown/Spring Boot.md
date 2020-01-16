@@ -275,4 +275,143 @@ public class MainOfApplication { }
 
 ------
 
-​                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+## 3 专注于Controller的开发                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
+~~~java
+@Controller
+public class cont {
+    @ResponseBody
+    @RequestMapping("/mano")
+    public String hel() {
+        return "awesome TypeScript";
+    }
+}
+~~~
+
+当我们在写 **Controller**时,需要给该类加上一个 **@controller** の注解,如果该类的方法中有多个响应浏览器请求的方法,那我们就可以把写在方法上的注解写在类上,通过继承来简化开发
+
+~~~java
+@Controller
+@ResponseBody
+public class cont {
+    @RequestMapping("/mano")
+    public String hel() {
+        return "awesome TypeScript";
+    }
+}
+//------------也可以用下面这种方法------------//
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+@RestController		//@ResponseBody属于 RESTAPI
+public class cont {
+    @RequestMapping("/mano")
+    public String hel() {
+        return "awesome TypeScript";
+    }
+}
+~~~
+
+## 4 Spring Boot配置
+
+
+
+### 4.1 配置文件
+
+①application.properties
+
+②application.yml
+
+主要就是修改**Spring Boot** 自动配置的默认值, 其中 **YAML** 是以数据为中心,更适合做配置文件 , 来对比一下两种配置文件の区别🎯
+
+~~~yaml
+ seserver :
+	port : 088
+~~~
+
+~~~xml
+<?xml version="1.0" encoding="gb2312"?>
+<server>
+    <port>8088</port>
+</server>
+~~~
+
+可以看出啊,**yml** 更加省时省力,而且所占的资源也更少
+
+#### 4.1.1 YAML语法
+
+eg: **Key : Value**
+
+以缩进来控制层级关系,冒号左右需要有一个空格,大小写敏感
+
+##### yaml 存储对象
+
+~~~yaml
+fruit :
+	apple : yes
+	fishes : no
+	banana : yes
+#---------------------
+#行内式写法
+fruit : {apple : yes,banana:yes}
+~~~
+
+##### **yaml** 存数组(List,Set):
+
+~~~yaml
+pets :
+	- cat
+	- dog
+#---------------------
+pets : [cat,dog]
+~~~
+
+### 4.2 从yml文件中读取配置
+
+略```,老师用的是专业版,我用的社区版,没有该功能
+
+### 4.3 此处插播一个 Error
+
+~~~properties
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.2.2.RELEASE)
+
+2020-01-16 18:42:40.977  INFO 7476 --- [           main] top.jokeme.startApp                      : Starting startApp on Frelon with PID 7476 (Z:\Java_Project\webapps\target\classes started by Frelon in Z:\Java_Project\webapps)
+2020-01-16 18:42:40.988  INFO 7476 --- [           main] top.jokeme.startApp                      : No active profile set, falling back to default profiles: default
+2020-01-16 18:42:45.065  INFO 7476 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-01-16 18:42:45.105  INFO 7476 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-01-16 18:42:45.105  INFO 7476 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.29]
+2020-01-16 18:42:45.406  INFO 7476 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-01-16 18:42:45.406  INFO 7476 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 3717 ms
+2020-01-16 18:42:45.426 ERROR 7476 --- [           main] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.BeanCreationException. Message: Error creating bean with name 'formContentFilter' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.web.servlet.filter.OrderedFormContentFilter]: Factory method 'formContentFilter' threw exception; nested exception is java.lang.NoClassDefFoundError: Could not initialize class com.fasterxml.jackson.databind.ObjectMapper
+2020-01-16 18:42:45.556  INFO 7476 --- [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2020-01-16 18:42:45.566  WARN 7476 --- [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+2020-01-16 18:42:45.576  INFO 7476 --- [           main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-01-16 18:42:45.596 ERROR 7476 --- [           main] o.s.boot.SpringApplication               : Application run failed
+
+~~~
+
+我也不知道怎么就出现了这个问题,就很突然,前一秒还可以正常运行,后一秒就报错了
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
