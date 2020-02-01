@@ -44,28 +44,28 @@ public class Fre{
             e.printStackTrace();
         }
     }
-//    @Test
-//    public void ssr() throws SQLException, IOException {
-//        Map<String,Object> outer = new HashMap<String, Object>();
-//        List<Map> list = new ArrayList<Map>();
-//        Fre solo = new Fre();
-//        ResultSet so  = solo.StartCollection();
-//        while(so.next()){
-//            Map<String,Object>  map = new HashMap<String, Object>();
-//            map.put("User_ID",so.getString(1));
-//            map.put("User_Name",so.getString(2));
-//            map.put("User_Mod",so.getString(3));
-//            map.put("User_IDE",so.getString(4));
-//            list.add(map);
-//        }
-//        String Solo = toJson(list);
-//        System.out.println(Solo);
-//        FileOutputStream fos = new FileOutputStream("solo.json",true);
-//        OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
-//        osw.write(Solo);
-//        System.out.println("Write Over");
-//        osw.close();
-//    }
+   // @Test
+   // public void ssr() throws SQLException, IOException {
+   //     Map<String,Object> outer = new HashMap<String, Object>();
+   //     List<Map> list = new ArrayList<Map>();
+   //     Fre solo = new Fre();
+   //     ResultSet so  = solo.StartCollection();
+   //     while(so.next()){
+   //         Map<String,Object>  map = new HashMap<String, Object>();
+   //         map.put("User_ID",so.getString(1));
+   //         map.put("User_Name",so.getString(2));
+   //         map.put("User_Mod",so.getString(3));
+   //         map.put("User_IDE",so.getString(4));
+   //         list.add(map);
+   //     }
+   //     String Solo = toTheJson(list);
+   //     System.out.println(Solo);
+   //     FileOutputStream fos = new FileOutputStream("solo.json",true);
+   //     OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
+   //     osw.write(Solo);
+   //     System.out.println("Write Over");
+   //     osw.close();
+   // }
 
     public static void main(String[] args) throws SQLException, IOException {
 
