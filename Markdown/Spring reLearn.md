@@ -316,3 +316,157 @@ public String[] selectImports(AnnotationMetadata annotationMetadata) {
 
 eg: **@ComponentScan("top.jokeme.ayibe")** 指定扫描 **ayibe** 这个包....如果指定以后就不会 使用默认的扫描方式,只会扫描指定の包
 
+## 4 .YAML
+
+#### 4.1. yaml基本语法:
+
+```yaml
+K: V
+##############
+K:
+    V1: 443
+    V2: sew
+```
+
+yaml是大小写敏感的,并且需要注意缩进和空格
+
+注意:yaml里面
+
+```yaml
+" " & ' ' 作用不一样
+```
+
+ " "会转义字符串,比如 \n 等
+
+' ' 不会转义字符串,输入啥,输出啥
+
+#### 4.2. yamlの 对象
+
+```yaml
+food:
+    name: apple
+    tasty: true
+####################
+food: {name: apple,tasty: true}
+```
+
+#### 4.3. yamlの数组
+
+```yaml
+interesting:
+ - 13
+ - 14
+ - 15
+#####################
+interesting: [13,14,15]
+```
+
+#### 4.4. yaml文件 & 数据绑定の测试
+
+~~~yaml
+person:
+  sname: zhangsan
+  sage: 18
+  Sod: 'AnHui Provience'
+  Lovelydog: {age: 13,name: lisi}
+~~~
+
+```java
+package top.day2_yaml;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * 将配置文件里的属性の值映射到这个组件中
+ * @ConfigurationProperties の作用是将本类中的属性与配置文件里的值进行绑定
+ * prefix = "person" 表示需要绑定yaml里面の哪个属性
+ * 只有这个组件是容器的组件才能使用容器的功能
+ *
+ */
+@RestController
+@Component
+@ConfigurationProperties(prefix = "person")
+public class Person {
+    String sname;
+    Integer sage;
+    String Sod;
+    dog Lovelydog;
+
+    @Override
+    @RequestMapping("/se")
+    public String toString() {
+        return "Person{" +
+                "sname='" + sname + '\'' +
+                ", sage=" + sage +
+                ", Sod='" + Sod + '\'' +
+                ", Lovelydog=" + Lovelydog +
+                '}';
+    }
+
+    public String getSname() {
+        return sname;
+    }
+// ... ...
+    public void setLovelydog(dog lovelydog) {
+        Lovelydog = lovelydog;
+    }
+}
+
+```
+
+```java
+package top.day2_yaml;
+
+public class dog {
+    Integer age;
+    String name;
+
+    public Integer getAge() {
+        return age;
+    }
+
+// ... ...
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+```java
+package top.day2_yaml;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Stater {
+    public static void main(String[] args) {
+        SpringApplication.run(Stater.class,args);
+    }
+}
+
+```
+
+如果不出意外:
+
+```java
+#localhost:8080/se 
+#会出现以下效果
+Person{sname='zhangsan', sage=18, Sod='AnHui Provience', Lovelydog=dog{age=13, name='lisi'}}
+```
+
+注意:这里可能需要导入以下依赖
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-configuration-processor</artifactId>
+  <version>2.3.0.RELEASE</version>
+</dependency>
+<!-- 配置文件处理模块,配置文件的数据绑定就依赖该模块 -->
+```
+
