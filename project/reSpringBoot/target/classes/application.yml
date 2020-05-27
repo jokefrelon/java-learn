@@ -1,0 +1,5 @@
+person:
+  sname: zhangsan
+  sage: 18
+  Sod: 'AnHui Provience'
+  Lovelydog: {age: 13,name: lisi}

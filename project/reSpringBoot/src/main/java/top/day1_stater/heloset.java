@@ -1,4 +1,4 @@
-package top.day_one;
+package top.day1_stater;
 
 public class heloset {
     private String sna;

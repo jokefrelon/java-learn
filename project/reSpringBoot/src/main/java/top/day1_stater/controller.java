@@ -1,4 +1,4 @@
-package top.day_one;
+package top.day1_stater;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
