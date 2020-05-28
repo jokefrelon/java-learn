@@ -1,10 +1,11 @@
-package top.day2_yaml;
+package top.day3_properties;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.day2_yaml.dog;
 
 /**
  * 将配置文件里的属性の值映射到这个组件中

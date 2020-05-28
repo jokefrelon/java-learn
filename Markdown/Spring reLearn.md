@@ -118,9 +118,9 @@ public @interface SpringBootApplication {
 
 注: **@import** 是 **SpringBoot** の底层注解.其作用就是给容器导入组件
 
-### 2.1需要注意两个比较重要的注解
+### 2.1 需要注意两个比较重要的注解
 
-#### 2.1.1.Registrar.class
+#### 2.1.1 Registrar.class
 
 ```
 @SpringBootApplication 中的 
@@ -316,7 +316,7 @@ public String[] selectImports(AnnotationMetadata annotationMetadata) {
 
 eg: **@ComponentScan("top.jokeme.ayibe")** 指定扫描 **ayibe** 这个包....如果指定以后就不会 使用默认的扫描方式,只会扫描指定の包
 
-## 4 .YAML
+## 4. YAML & Properties
 
 #### 4.1. yaml基本语法:
 
@@ -361,7 +361,7 @@ interesting:
 interesting: [13,14,15]
 ```
 
-#### 4.4. yaml文件 & 数据绑定の测试
+#### 4.4. yaml文件 & 数据绑定
 
 ~~~yaml
 person:
@@ -379,76 +379,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 将配置文件里的属性の值映射到这个组件中
- * @ConfigurationProperties の作用是将本类中的属性与配置文件里的值进行绑定
- * prefix = "person" 表示需要绑定yaml里面の哪个属性
- * 只有这个组件是容器的组件才能使用容器的功能
- *
- */
 @RestController
 @Component
 @ConfigurationProperties(prefix = "person")
 public class Person {
-    String sname;
-    Integer sage;
-    String Sod;
-    dog Lovelydog;
-
-    @Override
-    @RequestMapping("/se")
-    public String toString() {
-        return "Person{" +
-                "sname='" + sname + '\'' +
-                ", sage=" + sage +
-                ", Sod='" + Sod + '\'' +
-                ", Lovelydog=" + Lovelydog +
-                '}';
-    }
-
-    public String getSname() {
-        return sname;
-    }
-// ... ...
-    public void setLovelydog(dog lovelydog) {
-        Lovelydog = lovelydog;
-    }
 }
-
-```
-
-```java
-package top.day2_yaml;
-
-public class dog {
-    Integer age;
-    String name;
-
-    public Integer getAge() {
-        return age;
-    }
-
-// ... ...
-
-    public void setName(String name) {
-        this.name = name;
-    }
-}
-```
-
-```java
-package top.day2_yaml;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class Stater {
-    public static void main(String[] args) {
-        SpringApplication.run(Stater.class,args);
-    }
-}
-
 ```
 
 如果不出意外:
@@ -459,7 +394,9 @@ public class Stater {
 Person{sname='zhangsan', sage=18, Sod='AnHui Provience', Lovelydog=dog{age=13, name='lisi'}}
 ```
 
-注意:这里可能需要导入以下依赖
+注意1:**@Component** 注解是帮助绑定值的一个注解,所以不能忘记添加该注解
+
+注意2:这里可能需要导入以下依赖
 
 ```xml
 <dependency>
@@ -469,4 +406,111 @@ Person{sname='zhangsan', sage=18, Sod='AnHui Provience', Lovelydog=dog{age=13, n
 </dependency>
 <!-- 配置文件处理模块,配置文件的数据绑定就依赖该模块 -->
 ```
+
+#### 4.5. Properties
+
+**properties** の用法大致与 **yaml** 差不多,但是比 **yaml** 费事一点点
+
+```properties
+person.sname=zhangsan
+person.sage=18
+person.Sod='AnHui Provience'
+person.lovelydog.age=13
+person.lovelydog.name=lisi
+server.port=8088
+```
+
+∵ **Properties** 是大小写不敏感的
+
+∴ **person.age** = **person.Age**
+
+## 5. @Value
+
+#### 5.1 **@Value** 使用方法
+
+```java
+package top.day3_atValue;
+
+import org.springframework.beans.factory.annotation.Value;
+
+public class human {
+    @Value("Person")
+    String Typeof;
+}
+```
+
+
+
+#### 5.2 **@ConfigurationProperties & @Value** の区别
+
+|                  |   @ConfigurationProperties   |     @Value     |
+| :--------------: | :--------------------------: | :------------: |
+|     **特征**     | **批量注入配置文件里的属性** | **一个个指定** |
+|   **松散语法**   |           **😁YES**           |    **😭NO**     |
+|     **SpEL**     |           **😭NO**            |    **😁YES**    |
+|    **JSR303**    |           **😁YES**           |    **😭NO**     |
+| **复杂类型封装** |           **😁YES**           |    **😭NO**     |
+
+eg: 复杂类型封装就是指只, map/list/...
+
+#### 5.3 我们在何时使用他们
+
+如果我们只是某项业务逻辑中需要获取某个属性,推荐使用 
+
+如果我们是需要进行大规模配置文件,就要使用 **@ConfigurationProperties**
+
+## 6 @PropertySource & @ImportResource
+
+#### 6.1 @PropertySource使用方法
+
+```java
+package top.day3_atValue;
+
+import org.springframework.context.annotation.PropertySource;
+
+@PropertySource(value={"classpath:per.properties"})
+public class human {
+    
+}
+```
+
+
+
+*@PropertySource 加载指定☞的配置文件*
+
+*@ConfigurationProperties 默认获取全局の配置文件里的属性*
+
+⚠注意: **@PropertySource** 必须和 **@ConfigurationProperties** 一起使用才有效,单独使用没有效果
+
+#### 6.2 @ImportResource使用方法
+
+其作用是导入 **Spring** 里面的配置文件并让其生效
+
+```java
+@ImportResource(locations = {classpath:"abc.xml"})
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

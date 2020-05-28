@@ -4,6 +4,11 @@
       "name": "person",
       "type": "top.day2_yaml.Person",
       "sourceType": "top.day2_yaml.Person"
+    },
+    {
+      "name": "person",
+      "type": "top.day3_properties.Person",
+      "sourceType": "top.day3_properties.Person"
     }
   ],
   "properties": [
@@ -13,9 +18,19 @@
       "sourceType": "top.day2_yaml.Person"
     },
     {
+      "name": "person.lovelydog",
+      "type": "top.day2_yaml.dog",
+      "sourceType": "top.day3_properties.Person"
+    },
+    {
       "name": "person.sage",
       "type": "java.lang.Integer",
       "sourceType": "top.day2_yaml.Person"
+    },
+    {
+      "name": "person.sage",
+      "type": "java.lang.Integer",
+      "sourceType": "top.day3_properties.Person"
     },
     {
       "name": "person.sname",
@@ -23,9 +38,19 @@
       "sourceType": "top.day2_yaml.Person"
     },
     {
+      "name": "person.sname",
+      "type": "java.lang.String",
+      "sourceType": "top.day3_properties.Person"
+    },
+    {
       "name": "person.sod",
       "type": "java.lang.String",
       "sourceType": "top.day2_yaml.Person"
+    },
+    {
+      "name": "person.sod",
+      "type": "java.lang.String",
+      "sourceType": "top.day3_properties.Person"
     }
   ],
   "hints": []

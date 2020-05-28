@@ -1,4 +1,4 @@
-package top.day2_yaml;
+package top.day3_properties;
 
 public class dog {
     Integer age;
