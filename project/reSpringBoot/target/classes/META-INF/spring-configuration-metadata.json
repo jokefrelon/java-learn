@@ -1,6 +1,11 @@
 {
   "groups": [
     {
+      "name": "dog2",
+      "type": "top.day3_atValue.human",
+      "sourceType": "top.day3_atValue.human"
+    },
+    {
       "name": "person",
       "type": "top.day2_yaml.Person",
       "sourceType": "top.day2_yaml.Person"
@@ -12,6 +17,41 @@
     }
   ],
   "properties": [
+    {
+      "name": "dog2.eating-foods",
+      "type": "java.lang.String",
+      "sourceType": "top.day3_atValue.human"
+    },
+    {
+      "name": "dog2.example",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "sourceType": "top.day3_atValue.human"
+    },
+    {
+      "name": "dog2.friends",
+      "type": "java.util.List<java.lang.Object>",
+      "sourceType": "top.day3_atValue.human"
+    },
+    {
+      "name": "dog2.live-env",
+      "type": "java.lang.String",
+      "sourceType": "top.day3_atValue.human"
+    },
+    {
+      "name": "dog2.soul",
+      "type": "top.day3_atValue.Soul",
+      "sourceType": "top.day3_atValue.human"
+    },
+    {
+      "name": "dog2.sun-day",
+      "type": "java.lang.Integer",
+      "sourceType": "top.day3_atValue.human"
+    },
+    {
+      "name": "dog2.typeof",
+      "type": "java.lang.String",
+      "sourceType": "top.day3_atValue.human"
+    },
     {
       "name": "person.lovelydog",
       "type": "top.day2_yaml.dog",

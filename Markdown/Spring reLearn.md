@@ -459,7 +459,7 @@ eg: 复杂类型封装就是指只, map/list/...
 
 如果我们是需要进行大规模配置文件,就要使用 **@ConfigurationProperties**
 
-## 6 @PropertySource & @ImportResource
+## 6. @PropertySource & @ImportResource
 
 #### 6.1 @PropertySource使用方法
 
@@ -489,6 +489,146 @@ public class human {
 ```java
 @ImportResource(locations = {classpath:"abc.xml"})
 ```
+
+## 7. 配置文件占位符
+
+先来一个实例:
+
+```properties
+person.sname=${random.uuid}
+person.sage=${random.int}
+person.Sod='AnHui Provience'
+person.lovelydog.age=${person.lol:233}
+person.lovelydog.name=lisi
+server.port=8080
+```
+
+这就是用随机数 $random 来生成的,还有用占位符生成の
+
+**${person.lol:233}** の意思就是 有person.lol就用它,没有就用233
+
+```
+Person{sname='d573e71a-f8b2-4a48-a688-10449b4b55fc', sage=-1817647899, Sod=''AnHui Provience'', Lovelydog=dog{age=233, name='lisi'}}
+```
+
+## 8. Profile文件支持
+
+#### 8.1 多Profile文件
+
+##### 8.1.1 properties
+
+可以用多个带有 **application-{env}.properties** 来切换环境
+
+注: 默认的profile是 **application.properties** 
+
+如果需要切换生产环境,可以在 **application.properties**  里面配置
+
+```properties
+spring.profiles.active=env
+```
+
+```properties
+dog2.SunDay=24
+dog2.Example.k1=sim
+dog2.Example.k2=sib
+dog2.Friends={lisi,zhangsan}
+dog2.soul.Weight=30
+dog2.soul.Data=35
+dog2.soul.Power=80
+dog2.soul.Lovely=true
+spring.profiles.active=ssr
+
+person.sname=${random.uuid}
+person.sage=${random.int}
+person.Sod='AnHui Provience'
+person.lovelydog.age=${person.lol:233}
+person.lovelydog.name=lisi
+server.port=8080
+spring.profiles=ssr
+```
+
+##### 8.1.2 yaml
+
+如果配置文件是 **yaml** 我们还可以用更为简便の多文档块の方式
+
+这里就涉及到了基本の yaml 语法 **- - -** 这种连续三个 **-** 就表示文本块,看操作:
+
+```yaml
+person:
+  sname: zhangsan
+  sage: 18
+  Sod: 'AnHui Provience'
+  Lovelydog: {age: 13,name: lisi}
+spring:
+  profiles: 
+    active: ssr
+---
+person:
+  sname: ${random.uuid}
+  sage: ${random.int}
+  Sod: 'AnHui Provience'
+  Lovelydog: {age: 13,name: lisi}
+server.port: 8088
+spring:
+  profiles: ssr
+```
+
+## 9 SpringBoot配置文件の加载顺序
+
+首先关心一下,配置文件放哪里才会被加载
+
+|   **1.file:./config**    |   **2.file:/**    |
+| :----------------------: | :---------------: |
+| **3.classpath:/config/** | **4.classpath:/** |
+
+按照顺序,1-4按顺序扫描,然后1-4の优先级依次降低,当配置文件里的属性冲突时,以优先级高的配置文件为准
+
+还有一点需要注意的就是,这些文件都会被加载,形成互补配置
+
+#### 9.1 外部配置文件加载顺序
+
+```php
+1、命令行参数：所有的配置都可以在命令行参数中指定，每个配置项前使用--，多个配置间使用空格隔开，例如：
+
+java -jar spring-boot-02-0.0.1-SNAPSHOT.jar --server.port=8088 --server.context-path=boot
+2、来自java:comp/env的JNDI属性
+
+3、java的系统属性(System.getProperties(""))
+
+4、操作系统环境变量
+
+5、RandomValuePropertySource配置的random.*属性值
+
+6、jar包外部的application-{profile}.properties或application-{profile}.yml(带spring.profile配置)
+
+7、jar包内部的application-{profile}.properties或application-{profile}.yml(带spring.profile配置)
+
+8、jar包外部的application.properties或application.yml(不带spring.profile配置)
+
+9、jar包内部的application.properties或application.yml(不带spring.profile配置)
+
+10、@Configuration注解类上的@PropertySource
+
+11、通过SpringApplication.setDefaultProperties()指定的默认属性
+
+注：
+
+    ①以上配置文件的优先级顺序由高到低，高优先级的覆盖低优先级的并形成互补
+
+    ②6、8所指的jar包外指的是和jar包同一个文件夹下
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
