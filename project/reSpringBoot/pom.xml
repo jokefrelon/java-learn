@@ -50,6 +50,14 @@
             <version>2.3.0.RELEASE</version>
         </dependency>
         <!-- 配置文件处理模块,配置文件的数据绑定就依赖该模块   -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <version>2.2.4.RELEASE</version>
+        </dependency>
+        <!--    日志框架依赖    -->
+
     </dependencies>
 
 </project>

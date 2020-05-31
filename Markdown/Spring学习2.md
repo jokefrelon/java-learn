@@ -38,26 +38,26 @@
 
 - 
 
-- 套娃の时候来了, **@EnableAutoConfiguration** 又用注解导入了一个类**AutoConfigurationImportSelector.class**
+- 套娃の时候来了, **@EnableAutoConfiguration** 又用注解导入了一个类**AutoConfigurationImportslfector.class**
 
 - 
 
-- 其中 **AutoConfigurationImportSelector** 的 **selectImports()** 方法通过**SpringFactoriesLoader.loadFactoryNames()** 方法扫描所有具有 **META-INF/spring.factories** 的jar包
+- 其中 **AutoConfigurationImportslfector** 的 **slfectImports()** 方法通过**SpringFactoriesLoader.loadFactoryNames()** 方法扫描所有具有 **META-INF/spring.factories** 的jar包
 
 - 
 
 - ```java
   	@Override
-  	public String[] selectImports(AnnotationMetadata annotationMetadata) {
-  		if (!isEnabled(annotationMetadata)) {
-  			return NO_IMPORTS;
-  		}
-  		AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader
-  				.loadMetadata(this.beanClassLoader);
-  		AutoConfigurationEntry autoConfigurationEntry = getAutoConfigurationEntry(autoConfigurationMetadata,
-  				annotationMetadata);
-  		return StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());
-  	}
+    	public String[] slfectImports(AnnotationMetadata annotationMetadata) {
+    		if (!isEnabled(annotationMetadata)) {
+    			return NO_IMPORTS;
+    		}
+    		AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader
+    				.loadMetadata(this.beanClassLoader);
+    		AutoConfigurationEntry autoConfigurationEntry = getAutoConfigurationEntry(autoConfigurationMetadata,
+    				annotationMetadata);
+    		return StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());
+    	}
   ```
 
 - 
@@ -83,19 +83,16 @@
 		ServletWebServerFactoryConfiguration.EmbeddedJetty.class,
 		ServletWebServerFactoryConfiguration.EmbeddedUndertow.class })
 public class ServletWebServerFactoryAutoConfiguration {
-
 	@Bean
 	public ServletWebServerFactoryCustomizer servletWebServerFactoryCustomizer(ServerProperties serverProperties) {
 		return new ServletWebServerFactoryCustomizer(serverProperties);
 	}
-
 	@Bean
 	@ConditionalOnClass(name = "org.apache.catalina.startup.Tomcat")
 	public TomcatServletWebServerFactoryCustomizer tomcatServletWebServerFactoryCustomizer(
 			ServerProperties serverProperties) {
 		return new TomcatServletWebServerFactoryCustomizer(serverProperties);
 	}
-
 	@Bean
 	@ConditionalOnMissingFilterBean(ForwardedHeaderFilter.class)
 	@ConditionalOnProperty(value = "server.forward-headers-strategy", havingValue = "framework")
@@ -106,18 +103,14 @@ public class ServletWebServerFactoryAutoConfiguration {
 		registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return registration;
 	}
-
 	public static class BeanPostProcessorsRegistrar implements ImportBeanDefinitionRegistrar, BeanFactoryAware {
-
 		private ConfigurableListableBeanFactory beanFactory;
-
 		@Override
 		public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 			if (beanFactory instanceof ConfigurableListableBeanFactory) {
 				this.beanFactory = (ConfigurableListableBeanFactory) beanFactory;
 			}
 		}
-
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
 				BeanDefinitionRegistry registry) {
@@ -129,7 +122,6 @@ public class ServletWebServerFactoryAutoConfiguration {
 			registerSyntheticBeanIfMissing(registry, "errorPageRegistrarBeanPostProcessor",
 					ErrorPageRegistrarBeanPostProcessor.class);
 		}
-
 		private void registerSyntheticBeanIfMissing(BeanDefinitionRegistry registry, String name, Class<?> beanClass) {
 			if (ObjectUtils.isEmpty(this.beanFactory.getBeanNamesForType(beanClass, true, false))) {
 				RootBeanDefinition beanDefinition = new RootBeanDefinition(beanClass);
@@ -137,9 +129,7 @@ public class ServletWebServerFactoryAutoConfiguration {
 				registry.registerBeanDefinition(name, beanDefinition);
 			}
 		}
-
 	}
-
 }
 ```
 
@@ -162,3 +152,132 @@ Spring Boot启动的时候会通过@EnableAutoConfiguration注解找到META-INF/
 
 
 可以看一看 [扶墙老师说](https://afoo.me/posts/2015-07-09-how-spring-boot-works.html) の个人博客,简要了解 **SpringBoot** の相关知识
+
+
+
+## 3. 日志
+
+### 3.1 日志の作用?
+
+日志就是帮助我们分析程序的运行状态,以及帮助收集错误
+
+### 3.2 日志的架构
+
+通常是一个抽象接口,然后一个实现类
+
+### 3.3 SpringBoot 与 日志框架
+
+**SpringBoot** の底层是使用 **Spring** 框架,而 **Spring** 又是使用の **JCL** 框架
+
+**SpringBoot** 选择的实现类框架是 **slf4j & logback** , **Springboot** 将其他日志框架转换成 **slf4j** ,就是使用中间包的方式
+
+常见的中间包有 :
+
+```
+jcl-over-slf4j
+jul-to-slf4j
+log4j-over-slf4j
+```
+
+
+
+### 3.4 slf4j(抽象层) の使用
+
+![pic](http://www.slf4j.org/images/legacy.png)
+
+1. 导入jar包
+
+   ```xml
+           <dependency>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-logging</artifactId>
+               <version>2.2.4.RELEASE</version>
+           </dependency>
+   ```
+
+2. 移除日志框架
+
+   如果我们需要调用其他框架,而这个框架的默认依赖日志框架不是我们所需要的,那就放心的把这个默认的日志框架移除,不然后面调用我们自己想要使用的日志框架会报错
+
+3. 导入中间包
+
+   中间包就是防止移除默认的日志框架后,我们需要调用的框架不能正常使用的中继包,它带有默认框架的一些接口,并将他们转向我们需要的日志框架
+
+4. 导入slf4jの其他实现
+
+#### 3.4.1 代码实例
+
+```java
+package top.day4_slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class stater {
+    public static void main(String[] args) {
+        Logger logger = LoggerFactory.getLogger(stater.class);
+        logger.debug("debug_xxx");
+        logger.error("error_xxx");
+        logger.info("info_xxx");
+        logger.trace("trace_xxx");
+        logger.warn("warn_xxx");
+    }
+}
+```
+
+```verilog
+17:03:48.573 [main] DEBUG top.day4_slf4j.stater - debug_xxx
+17:03:48.589 [main] ERROR top.day4_slf4j.stater - error_xxx
+17:03:48.589 [main] INFO top.day4_slf4j.stater - info_xxx
+17:03:48.589 [main] WARN top.day4_slf4j.stater - warn_xxx
+```
+
+可以看到只有 **logger.trace** 没有输出,这是为什么?
+
+#### 3.4.2 配置文件
+
+**SpringBoot** の配置文件都在 **application.properties/application.yml** 里面
+
+| 日志框架                | 配置文件名称                                                 |
+| :---------------------- | ------------------------------------------------------------ |
+| Logback                 | `logback-spring.xml`, `logback-spring.groovy`, `logback.xml`, or `logback.groovy` |
+| Log4j2                  | `log4j2-spring.xml` or `log4j2.xml`                          |
+| JDK (Java Util Logging) | `logging.properties`                                         |
+
+如果可能，建议将`-spring`变体用于日志记录配置（例如，`logback-spring.xml`而不是`logback.xml`）。如果使用标准配置位置，Spring将无法完全控制日志初始化。
+
+```properties
+logging.level.top.jokeme=trace
+#上面logger.trace没有输出就是没有配置这个造成的
+logging.path=./log.txt
+#如果不指定就在console输出 <一般只用path,不用file>
+logging.file=./log/log.txt
+#如果不指定就在console输出
+```
+
+日志输出以下项目：
+
+- 日期和时间：毫秒精度，易于排序。
+- 日志级别：`ERROR`，`WARN`，`INFO`，`DEBUG`，或`TRACE`。
+- 进程ID。
+- 一个`---`分离器来区分实际日志消息的开始。
+- 线程名称：用方括号括起来（对于控制台输出可能会被截断）。
+- 记录器名称：这通常是源类名称（通常缩写）。
+- 日志消息。
+
+```verilog
+2020-05-31 17:58:03.280  INFO 10676 --- [           main] top.day3_properties.stater               : Starting stater on Frelon with PID 10676 (D:\github\java_learn\project\reSpringBoot\target\classes started by Frelon in D:\github\java_learn\project\reSpringBoot)
+2020-05-31 17:58:03.284  INFO 10676 --- [           main] top.day3_properties.stater               : No active profile set, falling back to default profiles: default
+2020-05-31 17:58:05.304  INFO 10676 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+```
+
+
+
+在我们以后の开发中,不要直接调用实现类,而是要用抽象层里面の方法,因为一旦调用具体的实现类,我们需要更换框架的时候就要花费巨大的时间和精力去修改代码了,而抽象方法就不一样了,可以随意的更换框架也不需要繁琐的配置
+
+参考文档: 
+
+[DocsHome](https://github.com/DocsHome/springboot)
+
+[SpringBoot官方文档](https://docs.spring.io/spring-boot/docs/2.1.5.RELEASE/reference/htmlsingle/)
+
