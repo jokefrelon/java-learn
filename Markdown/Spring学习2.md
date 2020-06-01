@@ -238,6 +238,8 @@ public class stater {
 
 **SpringBoot** の配置文件都在 **application.properties/application.yml** 里面
 
+**SpringBoot** 默认的配置文件在 **org.springframework.boot.spring-boot:x.x.x.RELEASE/spring-boot:x.x.x.RELEASE.jar/org.springframework.boot/logging/**
+
 | 日志框架                | 配置文件名称                                                 |
 | :---------------------- | ------------------------------------------------------------ |
 | Logback                 | `logback-spring.xml`, `logback-spring.groovy`, `logback.xml`, or `logback.groovy` |
@@ -277,7 +279,8 @@ logging.file=./log/log.txt
 
 参考文档: 
 
-[DocsHome](https://github.com/DocsHome/springboot)
+[DocsHome](https://github.com/DocsHome/springboot) 
 
 [SpringBoot官方文档](https://docs.spring.io/spring-boot/docs/2.1.5.RELEASE/reference/htmlsingle/)
 
+ 
