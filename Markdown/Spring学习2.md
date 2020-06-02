@@ -234,20 +234,6 @@ public class stater {
 
 可以看到只有 **logger.trace** 没有输出,这是为什么?
 
-#### 3.4.2 配置文件
-
-**SpringBoot** の配置文件都在 **application.properties/application.yml** 里面
-
-**SpringBoot** 默认的配置文件在 **org.springframework.boot.spring-boot:x.x.x.RELEASE/spring-boot:x.x.x.RELEASE.jar/org.springframework.boot/logging/**
-
-| 日志框架                | 配置文件名称                                                 |
-| :---------------------- | ------------------------------------------------------------ |
-| Logback                 | `logback-spring.xml`, `logback-spring.groovy`, `logback.xml`, or `logback.groovy` |
-| Log4j2                  | `log4j2-spring.xml` or `log4j2.xml`                          |
-| JDK (Java Util Logging) | `logging.properties`                                         |
-
-如果可能，建议将`-spring`变体用于日志记录配置（例如，`logback-spring.xml`而不是`logback.xml`）。如果使用标准配置位置，Spring将无法完全控制日志初始化。
-
 ```properties
 logging.level.top.jokeme=trace
 #上面logger.trace没有输出就是没有配置这个造成的
@@ -275,7 +261,41 @@ logging.file=./log/log.txt
 
 
 
-在我们以后の开发中,不要直接调用实现类,而是要用抽象层里面の方法,因为一旦调用具体的实现类,我们需要更换框架的时候就要花费巨大的时间和精力去修改代码了,而抽象方法就不一样了,可以随意的更换框架也不需要繁琐的配置
+#### 3.4.2 配置文件
+
+**SpringBoot** の配置文件都在 **application.properties/application.yml** 里面
+
+**SpringBoot** 默认的配置文件在 **org.springframework.boot.spring-boot:x.x.x.RELEASE/spring-boot:x.x.x.RELEASE.jar/org.springframework.boot/logging/**
+
+| 日志框架                | 配置文件名称                                                 |
+| :---------------------- | ------------------------------------------------------------ |
+| Logback                 | `logback-spring.xml`, `logback-spring.groovy`, `logback.xml`, or `logback.groovy` |
+| Log4j2                  | `log4j2-spring.xml` or `log4j2.xml`                          |
+| JDK (Java Util Logging) | `logging.properties`                                         |
+
+如果可能，建议将`-spring`变体用于日志记录配置（例如，`logback-spring.xml`而不是`logback.xml`）。如果使用标准配置位置，Spring将无法完全控制日志初始化。在我们以后の开发中,不要直接调用实现类,而是要用抽象层里面の方法,因为一旦调用具体的实现类,我们需要更换框架的时候就要花费巨大的时间和精力去修改代码了,而抽象方法就不一样了,可以随意的更换框架也不需要繁琐的配置
+
+#### 3.4.3 根据环境加载配置文件
+
+先在日志框架の配置文件里面配置以下内容
+
+```xml
+<springProfile name="dev">
+    <!-- name 是表示环境 -->
+</springProfile>
+```
+
+然后再在 **SpringBoot** の配置文件 **application.properties** 激活该配置项
+
+```properties
+spring.profiles.active=dev
+```
+
+或者在命令行激活
+
+```shell
+java xxx xxx --spring.profiles.active=dev
+```
 
 参考文档: 
 
@@ -283,4 +303,36 @@ logging.file=./log/log.txt
 
 [SpringBoot官方文档](https://docs.spring.io/spring-boot/docs/2.1.5.RELEASE/reference/htmlsingle/)
 
- 
+日志部分先到这里先结束,好多东西以后遇到了再慢慢学
+
+## 4. SpringBoot & Web开发
+
+1. 创建 **SpringBoot** 应用,添加模块
+2. 修改少量配置文件
+3. 编写代码
+4. 开始运行
+
+回顾一下自动配置
+
+1. **xxxAutoConfiguration** 给容器自动配置组件
+2. **xxxProperties** 配置类来封装配置文件内容
+
+### 4.1 SpringBoot & 静态资源
+
+```java
+"classpath:/META-INF/resources/"
+"classpath:/resources/"
+"classpath:/static/"
+"classpath:/public/"
+"/" <当前项目的 / 路径>
+```
+
+这几个是常见的静态资源存放路径
+
+注意: **classpath** 是指我们 coding 时候的 **resources📂** 文件夹 ,例如我的就是 ```webApp\src\main\resources```
+
+
+
+
+
+
