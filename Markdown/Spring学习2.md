@@ -329,7 +329,18 @@ java xxx xxx --spring.profiles.active=dev
 
 这几个是常见的静态资源存放路径
 
-注意: **classpath** 是指我们 coding 时候的 **resources📂** 文件夹 ,例如我的就是 ```webApp\src\main\resources```
+可以在  ```spring-boot-autoconfigure-2.2.2.RELEASE.jar/web/servlet/WebMvcAutoConfiguration``` 或者 ```spring-boot-autoconfigure-2.2.2.RELEASE.jar/web/ResourceProperties``` 文件里面看到具体的配置,也可以手动修改
+
+```java
+private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/",
+			"classpath:/resources/", "classpath:/static/", "classpath:/public/" };
+```
+
+
+
+注意: **classpath** 是指我们 coding 时候的 **resources📂/ java📂** 文件夹 ,例如我的就是 ```webApp\src\main\resources```
+
+
 
 
 

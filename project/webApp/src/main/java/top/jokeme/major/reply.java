@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class reply {
-    @RequestMapping("/")
+    @RequestMapping("/set")
     public String golong (){
         return "hello";
     }

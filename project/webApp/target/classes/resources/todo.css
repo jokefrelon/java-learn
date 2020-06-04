@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+cd ~/
+touch a.fltcs
+echo "Funy mud pea" > a.fltcs
+chmod 755 a.fltcs
