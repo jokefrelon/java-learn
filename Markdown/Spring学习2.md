@@ -342,6 +342,67 @@ private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-
 
 
 
+## 5. 模板引擎
+
+**SpringBoot** 官方推荐我们使用 **Thymeleaf** 
+
+### 5.1 导依赖
+
+```xml
+<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+```
+
+### 5.2 Thymeleaf的语法
+
+略
+
+声明:模板引擎,这些型如 **Thymeleaf** , **Freemaker** 都是用于前端后端一把梭の情况下,而现在基本上都是前后端分离了,Java后端程序员不需要管这些html,只需要安心的写*~~Bug~~*代码就好了.当下 **Vue React** 特别流行,所以这些模板引擎就暂时跳过,等什么时候再前后端一把梭,我再来学!!!
+
+## 6. Spring MVC
+
+### 6.1 什么是MVC设计模式
+
+就是将程序分为 **Model , View , Controller** 三个层次, 
+
+**Controller** 负责接收客户端の响应
+
+**Model** 负责生成业务数据传递给 **View**
+
+**mvc** 就是封装底层代码,开放相关接口方便大家开发
+
+### 6.2 核心组件
+
+- `DispatcherServlet`:控制器,进行任务调度,降低组件间的耦合性,相对来说最重要的
+- `Handler`:处理器完成具体的业务逻辑
+- `HandlerMapping`:当`DispatcherServlet`接收到请求后,通过`HandlerMapping`将不同的请求映射到不同的`Handler`
+- `HandlerInterceptor`:一个处理拦截器的接口,可以实现该接口完成具体的拦截请求
+- `HandlerExecutionChain`:处理器执行链,包括`Handler`和`HandlerInterceptor`
+- `HandlerAdapter`:处理器适配器,`Handler`执行业务之前,需要进行一系列操作,包括但不限于,表单数据的验证,数据类型的转换,将表单数据封装到**JavaBean**里
+- `ModelAndView`:装载模型数据＆视图,作为`Handler`的处理结果返回给 `DispatcherServlet`
+- `ViewResolver`:视图解析器,`DispatcherServlet`通过它将逻辑视图解析为物理视图,最终将渲染结果响应给客户端
+
+```
+client|----Get------> |DispatcherServlet|  ---------Get Handler--------->   |HandlerMapping|
+      |--- Return---> |DispatcherServlet| <--Return HandlerExecutionChain-- |HandlerMapping|
+                     ↗   /           ↖   \                          
+                    /   /              \   \                             
+             返回View 解析ModelAndView   \   \           
+                  /   /                  \   \                          
+                 /   /      返回ModelAndView 请求HandlerAdapter                       
+                /   ↙                      \   ↘      | ----Exec Handler --->   |Handler
+            ViewResolver              HandlerAdapter  | <--- Return ModelAndView |
+```
+
+
+
+### 6.3 MVC工作流程(简化版)
+
+![pic](https://images2017.cnblogs.com/blog/1135193/201710/1135193-20171005165210099-1015669941.png)
+
+
 
 
 

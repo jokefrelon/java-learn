@@ -35,6 +35,12 @@
             <version>2.1.7.RELEASE</version>
         </dependency>
         <!--该插件是将Springboot项目打包为可执行的jar包 -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
     </dependencies>
 
 
