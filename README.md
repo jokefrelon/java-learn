@@ -1,53 +1,23 @@
-Java学习笔记📒
-					～Frelon - Lee～
-
-### 最近在网上发现了一句非常厉害的 **List<Map<String,String>>** 转 **JSON** 语句
-
-~~~java
-String jsonData = list.toString().replace("{", "{\"").replace("}", "\"}")
-  .replace("=","\":\"").replace(", ", "\",\"").replace("}\",\"{", "},{");
-~~~
-
-### 来对比一下：
-
-~~~json
-没有转化前：
-[
-{User_Name=Tom_smilo, User_Mod=Unkonwn, User_IDE=132564897, User_ID=2}, 
-  
-{User_Name=Asimai, User_Mod=Unkonwn, User_IDE=968598489, User_ID=5}, 
-  
-{User_Name=jojy_bell, User_Mod=Unkonwn, User_IDE=1237181248, User_ID=1}
-]
-~~~
-
-~~~json
-转化后：
-[
-{"User_Name":"Tom_smilo","User_Mod":"Unkonwn","User_IDE":"132564897","User_ID":"2"},
-
-{"User_Name":"Asimai","User_Mod":"Unkonwn","User_IDE":"968598489","User_ID":"5"},
-
-{"User_Name":"jojy_bell","User_Mod":"Unkonwn","User_IDE":"1237181248","User_ID":"1"}
-]
-~~~
-
-总结就是：
-
-|    {  |  >>    |   	{"   |
-| :--: | :--: | :--: |
-| **=** | **>>**   |   **":"**   |
-| **,**  | **>>** | **","**  |
-|   **}","**   |   **>>**   | **"},{** |
-|    **}]**		  |  **>>**	| **"}]** |
-
-于是我自己 也 写了一个，发现很简单
-
-~~~java
-String jsonData = list.toString().replace("{","{\"").replace("=","\":\""). replace(",","\",\"").replace("}\",\" {","\"},{").replace("}]","\"}]");
-~~~
+# 项目简介
 
 
+## xueqing_sourceCode
+主要是当时学大数据时写的代码,主要是应付云计算比赛准备的,咱无参考意义.
 
+## project
+主要是自己写的烂尾小项目	
+	
+### firstSpring
+首次学习spring写的垃圾代码
 
+### reSpringBoot
+再次学习springboot写的垃圾代码(中间隔了很长时间,所以很多东西忘记了)
 
+### webApp
+没有啥意义,刚学springboot时写的,为了记住格式.
+
+## Markdown
+主要就是学习时记录的笔记,现在已经不放Github了,放在我的网站上[JokemeBlog](https://jokeme.top)
+
+## javalearn
+学习Java基础时写的练习代码.
