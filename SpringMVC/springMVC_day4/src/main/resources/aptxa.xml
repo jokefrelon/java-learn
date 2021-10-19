@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    <bean id="mess" class="top.jokeme.top.jokeme.pojo.Student" >
+        <property name="name" value="Frelon_Lee"></property>
+        <property name="fam" ref="family"></property>
+        <property name="room">
+            <array>
+                <value>King301</value>
+                <value>Julu333</value>
+            </array>
+        </property>
+        <property name="famWeight">
+            <list>
+                <value>12398</value>
+                <value>98789</value>
+                <value>89782</value>
+            </list>
+        </property>
+        <property name="chairModule">
+            <map>
+                <entry key="child1" value="Jhon"></entry>
+                <entry key="child2" value="Tims"></entry>
+            </map>
+        </property>
+        <property name="aspn">
+            <set>
+                <value>3.1415926x</value>
+                <value>Hero Aria</value>
+                <value>King of Bee</value>
+            </set>
+        </property>
+        <property name="hash" >
+            <props>
+                <prop key="sex">Boy</prop>
+                <prop key="job">student</prop>
+            </props>
+        </property>
+
+    </bean>
+    <bean id="family" class="top.jokeme.top.jokeme.pojo.family">
+        <property name="fmad" value="山水大街2501 卡卡西 斯巴坦克尔 葵颐邯"></property>
+    </bean>
+</beans>

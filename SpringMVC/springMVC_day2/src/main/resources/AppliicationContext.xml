@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+<!--    使用Spring的xml配置文件来创建对象 也就是说 bean = Object（对象） -->
+<!--    一个bean就相当于 new 一个对象 ，id = 变量名 ，property 的 name & value = 对变量赋值 -->
+    <bean id="car" class="top.jokeme.top.jokeme.pojo.Car">
+        <property name="module" value="Tesla Module 3"></property>
+        <property name="price" value="270,000¥"></property>
+    </bean>
+
+</beans>

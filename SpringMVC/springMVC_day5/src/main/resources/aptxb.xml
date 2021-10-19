@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="cat" class="top.jokeme.top.jokeme.pojo.Cat"></bean>
+    <bean id="dog" class="top.jokeme.top.jokeme.pojo.Dog"></bean>
+
+    <bean id="Hum" class="top.jokeme.top.jokeme.pojo.Human" autowire="byName">
+        <property name="human" value="Frelon_Lee"></property>
+    </bean>
+
+</beans>
