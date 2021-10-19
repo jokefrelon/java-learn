@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    <bean id="MysqlImpl" class="top.jokeme.dao.UserDaoMysqlImpl"></bean>
+    <bean id="MongoImpl" class="top.jokeme.dao.UserDaoMongoImpl"></bean>
+    <bean id="MariadbImpl" class="top.jokeme.dao.UserDaoMariadbImpl"></bean>
+
+    <bean id="UserServiceImpl" class="top.jokeme.service.UserServiceImpl">
+        <!-- 这里property 不能直接用value 而是要用 ref 去指向一个容器中已经创建好的bean/对象 来调用 -->
+        <property name="userDao" ref="MysqlImpl"></property>
+    </bean>
+</beans>
